@@ -25,6 +25,10 @@
       .ui.right.aligned.segment
         .ui.input #[input(type="text", placeholder="請輸入", v-model="blood_pressure4")]
 
+  .container
+    #camera
+      button.icon.ui.button.circular.massive.item(@click='$emit("turnOnCamera")')
+        i.icon.camera
 </template>
 
 <script>
@@ -157,5 +161,10 @@ export default{
     input
       text-align: center
       padding: 0.6em
+
+  .container
+    display: flex
+    justify-content: space-around
+    width: 100%
 
 </style>
