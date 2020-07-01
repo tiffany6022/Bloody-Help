@@ -35,10 +35,11 @@ export default{
   },
 
   data(){ return {
-    'mode': 'running',
+    mode: 'running',
     devices: [],
     deviceId: null,
     img: null,
+    cameraIndex: 0
   }},
 
   methods: {
@@ -66,7 +67,8 @@ export default{
     },
 
     changeCamera() {
-      console.log('changing camera...')
+      this.cameraIndex = (this.cameraIndex+1) % this.devices.length
+      this.deviceId = this.devices[this.cameraIndex].deviceId
     },
 
   }

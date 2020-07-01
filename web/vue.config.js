@@ -1,15 +1,15 @@
 const fs = require('fs')
 
 module.exports = {
-  // devServer: {
-  //   host: 'merry.ee.ncku.edu.tw',
-  //   port: 13333,
-  //   https: {
-  //     key: fs.readFileSync('/home/yichung/ssl/private.key'),
-  //     cert: fs.readFileSync('/home/yichung/ssl/certificate.crt'),
-  //   },
-  // },
-  //
+  devServer: {
+    host: 'merry.ee.ncku.edu.tw',
+    port: 13333,
+    https: {
+      key: fs.readFileSync('/home/yichung/ssl/private.key'),
+      cert: fs.readFileSync('/home/yichung/ssl/certificate.crt'),
+    },
+  },
+
   pwa: {
     name: 'BPM_reader',
     appleMobileWebAppCapable: 'yes',
