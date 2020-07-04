@@ -1,6 +1,8 @@
 const fs = require('fs')
 
 module.exports = {
+   publicPath: 'static',
+
   devServer: {
     host: 'merry.ee.ncku.edu.tw',
     port: 13333,
