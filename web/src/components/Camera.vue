@@ -27,6 +27,7 @@
 <script>
 import { WebCam } from "vue-web-cam"
 import 'semantic-ui-offline/semantic.min.css'
+const axios = require('axios')
 
 export default{
 
@@ -57,12 +58,18 @@ export default{
 
     upload() {
       console.log('uploading img...')
+      var image = {
+        base64: this.img,
+        name: "123"
+      }
+      axios.post('/img', image)
+      console.log(image.base64)
       this.$emit("backhome")
     },
 
 
     onCameras(cameras) {
-	this.devices = cameras;
+	this.devices = cameras
 	this.deviceId = cameras[0].deviceId
     },
 

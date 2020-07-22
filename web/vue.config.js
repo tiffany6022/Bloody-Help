@@ -5,7 +5,7 @@ module.exports = {
 
   devServer: {
     host: 'merry.ee.ncku.edu.tw',
-    port: 13333,
+    port: 13233,
     https: {
       key: fs.readFileSync('/home/yichung/ssl/private.key'),
       cert: fs.readFileSync('/home/yichung/ssl/certificate.crt'),
