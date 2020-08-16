@@ -1,28 +1,98 @@
 
-// importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
+if (workbox) {
+  console.log(`Workbox is loaded`)
+}
+else {
+  console.log(`Workbox didn't load`)
+}
+
+workbox.core.setCacheNameDetails({
+  prefix: 'bpm',
+  suffix: 'v1.0.0'
+})
+
+
+var cacheFiles = [
+  './css/app.c1577da7.css',
+  './css/chunk-vendors.158b6d7d.css',
+  './js/app.7f0b68fb.js',
+  './js/chunk-vendors.8d4ff3ef.js',
+  './index.html',
+  './manifest.json',
+]
+
+// const precacheController = workbox.precaching.precacheAndRoute(cacheFiles)
 //
-// if (workbox) {
-//   console.log(`Workbox is loaded`)
-//   // workbox.precaching.precacheAndRoute(self.__precacheManifest)
-// }
-// else {
-//   console.log(`Workbox didn't load`)
-// }
+// self.addEventListener('install', (event) => {
+//   event.waitUntil(precacheController.install())
+// })
+//
+// self.addEventListener('activate', (event) => {
+//   event.waitUntil(precacheController.activate())
+// })
+//
+// self.addEventListener('fetch', (event) => {
+//   const cacheKey = precacheController.getCacheKeyForURL(event.request.url)
+//   event.respondWith(caches.match(cacheKey).then(...))
+// })
+
+// workbox.precaching.precacheAndRoute(cacheFiles)
+
+// workbox.precaching.precacheAndRoute(self.__precacheManifest || [])
+
+// // 缓存web的css资源
+// workbox.routing.registerRoute(
+//   // Cache CSS files
+//   /.*\.css/,
+//   // 使用缓存，但尽快在后台更新
+//   workbox.strategies.staleWhileRevalidate({
+//     // 使用自定义缓存名称
+//     cacheName: 'css-cache'
+//   })
+// );
+//
+// // 缓存web的js资源
+// workbox.routing.registerRoute(
+//   // 缓存JS文件
+//   /.*\.js/,
+//   // 使用缓存，但尽快在后台更新
+//   workbox.strategies.staleWhileRevalidate({
+//     // 使用自定义缓存名称
+//     cacheName: 'js-cache'
+//   })
+// );
+//
+// // 缓存web的图片资源
+// workbox.routing.registerRoute(
+//   /\.(?:png|gif|jpg|jpeg|svg)$/,
+//   workbox.strategies.staleWhileRevalidate({
+//     cacheName: 'images',
+//     plugins: [
+//       new workbox.expiration.Plugin({
+//         maxEntries: 60,
+//         maxAgeSeconds: 30 * 24 * 60 * 60 // 设置缓存有效期为30天
+//       })
+//     ]
+//     })
+//   );
+
+/*
 
 // Step 4 code here //
 // try edit the cached files and/or the `cachedFiles` list
 const cachedFiles = [
-  './',
-  './js/app.js',
-  './js/chunk-vendors.js',
-  './fonts/icons.0ab54153.woff2',
-  './fonts/lato-v14-latin-regular.f1a4a058.woff2',
+  // './',
+  './css/app.c1577da7.css',
+  './css/chunk-vendors.158b6d7d.css',
+  './js/app.7f0b68fb.js',
+  './js/chunk-vendors.8d4ff3ef.js',
   './index.html',
   './manifest.json',
 ]
 
 // edit this to force re-cache
-const cacheKey = 'demo-sw-v2'
+const cacheKey = 'sw-v2'
+console.log('sw')
 
 // install, a good time to preload cache
 self.addEventListener('install', event => {
@@ -58,4 +128,4 @@ self.addEventListener('fetch', event => {
   })())
 })
 
-
+*/

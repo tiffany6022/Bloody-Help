@@ -1,17 +1,22 @@
 <template lang="pug">
 #app
-  h1.ui.dividing.center.aligned.header Header
+  meta(name="viewport", content="width=device-width,initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0")
+  #pages
+    h2.ui.dividing.center.aligned.header(v-if="'home'==page") HomePage
+    h2.ui.dividing.center.aligned.header(v-if="'chart'==page") ChartPage
+    h2.ui.dividing.center.aligned.header(v-if="'user'==page") UserPage
 
-  camera-page(v-if="'camera'==page", @backhome="page='home'")
-  .ui.container
-    home-page(v-show="'home'==page", @turnOnCamera="page='camera'")
-    chart-page(v-show="'chart'==page")
-    user-page(v-show="'user'==page")
+    camera-page(v-if="'camera'==page", @backhome="page='home'")
+    .ui.container
+      home-page(v-if="'home'==page", @turnOnCamera="page='camera'")
+      chart-page(v-if="'chart'==page")
+      user-page(v-if="'user'==page")
 
-  .ui.bottom.fixed.icon.fixed.item.labeled.borderless.four.menu
-    .item(@click="page='home'") #[i.home.icon(:style="homeIconStyle")]
-    .item(@click="page='chart'") #[i.chart.line.icon(:style="chartIconStyle")]
-    .item(@click="page='user'") #[i.user.icon(:style="userIconStyle")]
+  #footer
+    .ui.bottom.fixed.icon.fixed.item.labeled.borderless.four.menu
+      .item(@click="page='home'") #[i.home.icon(:style="homeIconStyle")]
+      .item(@click="page='chart'") #[i.chart.line.icon(:style="chartIconStyle")]
+      .item(@click="page='user'") #[i.user.icon(:style="userIconStyle")]
 
 </template>
 
@@ -59,8 +64,16 @@ export default {
   width: 100vw
   height: 100vh
 
-  .header
-    padding: 2vh
-    background-color: white
+  #pages
+    background-color: whitesmoke
+    .header
+      padding: 2vh
+      background-color: white
+
+  #footer
+    background-color: whitesmoke
+    height: 5em
+    .menu
+      background-color: white
 
 </style>

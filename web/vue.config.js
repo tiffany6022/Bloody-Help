@@ -1,11 +1,11 @@
 const fs = require('fs')
 
 module.exports = {
-   publicPath: 'static',
+  publicPath: 'static',
 
   devServer: {
     host: 'merry.ee.ncku.edu.tw',
-    port: 13233,
+    port: 12233,
     https: {
       key: fs.readFileSync('/home/yichung/ssl/private.key'),
       cert: fs.readFileSync('/home/yichung/ssl/certificate.crt'),
@@ -17,12 +17,12 @@ module.exports = {
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
 
-    // configure the workbox plugin
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      // swSrc is required in InjectManifest mode.
-      swSrc: 'public/sw.js',
-      // ...other Workbox options...
-    }
+    // // configure the workbox plugin
+    // workboxPluginMode: 'InjectManifest',
+    // workboxOptions: {
+    //   // swSrc is required in InjectManifest mode.
+    //   swSrc: 'public/sw.js',
+    //   // ...other Workbox options...
+    // },
   }
 }

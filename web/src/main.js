@@ -4,12 +4,10 @@ import App from './App.vue'
 import './registerServiceWorker'
 // import router from './router'
 import store from './store'
-// import VeLine from 'v-charts/lib/line.common'
 import VeLine from 'v-charts/lib/line.common'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
-// Vue.use(VeLine, { componentName: VeLine.name })
 Vue.component(VeLine.name, VeLine)
 
 const router = new VueRouter({ routes: [

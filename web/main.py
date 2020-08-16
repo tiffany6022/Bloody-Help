@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import numpy as np
 import cv2
 import time
@@ -14,6 +13,7 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
+import pytesseract
 
 app = FastAPI()
 
@@ -46,6 +46,8 @@ async def img(images: Image):
     im = [[[r, g, b], [r, g, b]],
               [...], ...]
     '''
+
+    print(pytesseract.image_to_string(im, lang='eng', config='--psm 6'))
 
     # return images
 
