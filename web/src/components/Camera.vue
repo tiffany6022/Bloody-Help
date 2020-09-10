@@ -40,7 +40,7 @@ export default{
     devices: [],
     deviceId: null,
     img: null,
-    cameraIndex: 0
+    cameraIndex: 0,
   }},
 
   methods: {
@@ -56,21 +56,22 @@ export default{
       this.mode='pause'
     },
 
-    upload() {
+    async upload() {
       console.log('uploading img...')
       var image = {
         base64: this.img,
-        name: "123"
+        name: "imageName"
       }
-      axios.post('/img', image)
-      console.log(image.base64)
+      await axios.post('/img', image)
+      .then((res) => {
+        this.$root.$emit("writedata", res.data)
+      })
       this.$emit("backhome")
     },
 
-
     onCameras(cameras) {
-	this.devices = cameras
-	this.deviceId = cameras[0].deviceId
+      this.devices = cameras
+      this.deviceId = cameras[0].deviceId
     },
 
     changeCamera() {

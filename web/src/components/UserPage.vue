@@ -8,7 +8,7 @@
     .item
       i.child.massive.icon
       .content
-        h2 Maggie Kao
+        .ui.fluid.transparent.input #[input(v-model="userName")]
         .averagedata
           .ui.circular.segment(:style='sysColor')
             h4.ui.header SYS
@@ -58,6 +58,7 @@ export default{
       { id: 3, color: 'green', state: '正常', sysBound: '91-120', diaBound: '61-80', showDetail: false, details: '血壓處於正常範圍，還是要繼續維持規律運動習慣、均衡營養的飲食，並且避免攝取過多反式脂肪與鹽類。' },
       { id: 4, color: 'blue', state: '低血壓', sysBound: '<90', diaBound: '<60', showDetail: false, details: '請注意是否為貧血所導致，建議可多加補充富含鐵質、葉酸、維生素 B12 的食物（如深綠色蔬菜等）。' },
     ],
+    userName: "Maggie Kao",
   }},
 
   computed: {
@@ -149,6 +150,8 @@ export default{
     .item
       .content
         margin: 0em 1em
+        .input>input
+          font-size: x-large
         .averagedata
           display: flex
           justify-content: space-between
@@ -156,7 +159,6 @@ export default{
           .circular.segment
             padding: 0.75em 1em
             background-color: transparent
-            margin: 0 0 2em 0
             border-width: 0.15rem
             border-style: dashed
 

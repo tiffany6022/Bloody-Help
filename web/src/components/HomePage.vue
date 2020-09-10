@@ -91,6 +91,12 @@ export default{
     this.year = today.getFullYear()
     this.month = today.getMonth() + 1    // 0~11 month
     this.date = today.getDate()
+    this.$root.$on("writedata", (res) => {
+      this.blood_pressure1 = res.SYS
+      this.blood_pressure2 = res.DIA
+      this.blood_pressure3 = res.PUL
+      this.setStorage()
+    })
   },
 
   updated () {
