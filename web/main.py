@@ -14,8 +14,26 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 import pytesseract
+# load model
+from test import Craft_model
+from test import test_net
+from test import str2bool
+import argparse
 
 app = FastAPI()
+
+model_path = "../craft_predict/CRAFT_clr_9.pth"
+net = Craft_model(model_path)
+
+TEXT_THRESHOLD = 0.4
+parser = argparse.ArgumentParser(description='CRAFT Text Detection')
+parser.add_argument('--text_threshold', default=0.7, type=float, help='text confidence threshold')
+parser.add_argument('--low_text', default=0.4, type=float, help='text low-bound score')
+parser.add_argument('--link_threshold', default=0.4, type=float, help='link confidence threshold')
+parser.add_argument('--cuda', default=True, type=str2bool, help='Use cuda to train model')
+parser.add_argument('--poly', default=False, action='store_true', help='enable polygon type')
+args = parser.parse_args()
+
 
 class Image(BaseModel):
     base64: str
@@ -41,14 +59,21 @@ async def img(images: Image):
 
     img = np.fromstring(imgdata, np.uint8)
     # img = [255, 200, 123, 123, 23 ...]
-    im = cv2.imdecode(img, cv2.COLOR_RGB2BGR)
+    img = cv2.imdecode(img, cv2.COLOR_RGB2BGR)
+    bboxes = test_net(net, img, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly)
+
     '''
     im = [[[r, g, b], [r, g, b]],
               [...], ...]
     '''
+    for bb in bbox:
+        required_str = pytesseract.image_to_string(img[x0: x1, y0: y1], lang='eng', config='--psm 6')
 
-    print(pytesseract.image_to_string(im, lang='eng', config='--psm 6'))
-
+    return {
+        'sys': ...,
+        'dia': ...,
+        'pulse': ...
+    }
     # return images
 
 #ssl
