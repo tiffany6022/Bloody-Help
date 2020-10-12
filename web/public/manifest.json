@@ -1,7 +1,6 @@
 {
-  "name": "bpm_reader",
-  "short_name": "bpm",
-  "theme_color": "#000000",
+  "name": "Bloody Help",
+  "short_name": "Bloody Help",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

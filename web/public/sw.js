@@ -44,8 +44,10 @@ const cachedFiles = [
 './fonts/lato-v14-latin-regular.f1a4a058.woff2',
 './fonts/brand-icons.a046592b.woff',
 // ./js
-'./js/app.js',
-'./js/chunk-vendors.js',
+// './js/appe6c2da6f.js',
+'./js/app.e6c2da6f.js.map',
+// './js/chunk-vendors01efc803.js',
+'./js/chunk-vendors.01efc803.js.map',
 './index.html',
 ]
 
