@@ -74,19 +74,26 @@ async def img(images: Image):
 
     cv2.imwrite('beforetest.jpg', img)
 
-    # bboxes = test_net(net, img, 0.7, 0.4, 0.4, True, False)
+    bboxes = test_net(net, img, 0.7, 0.4, 0.4, True, False)
     # print(bboxes.shape)
-    # shift = 0
-    # for i, bb in enumerate(bboxes):
-    #     cropimg = img[int(bb[0][1]) - shift: int(bb[2][1]) + shift, int(bb[0][0]) - shift: int(bb[2][0]) + shift]
-    #     # gray_img = cv2.cvtColor(cropimg, cv2.COLOR_BGR2GRAY)
-    #     # th3_img = cv2.adaptiveThreshold(gray_img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
-    #     #                            cv2.THRESH_BINARY,11,2)
-    #     # cropimg = cv2.cvtColor(th3_img, cv2.COLOR_GRAY2BGR)
-    #     # cropimg = rotate(cropimg, 4)
-    #     cv2.imwrite('aftertest'+str(i)+'.jpg', cropimg)
-    #     required_str = pytesseract.image_to_string(cropimg, lang='lcd_digit2', config='--psm 6')
-    #     print("tesseract: "+required_str)
+    shift = 3
+    for i, bb in enumerate(bboxes):
+        cropimg = img[int(bb[0][1]) - shift: int(bb[2][1]) + shift, int(bb[0][0]) - shift: int(bb[2][0]) + shift]
+        # gray_img = cv2.cvtColor(cropimg, cv2.COLOR_BGR2GRAY)
+        # th3_img = cv2.adaptiveThreshold(gray_img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+        #                            cv2.THRESH_BINARY,11,2)
+        # cropimg = cv2.cvtColor(th3_img, cv2.COLOR_GRAY2BGR)
+        # cropimg = rotate(cropimg, 4)
+        # cv2.imwrite('aftertest'+str(i)+'.jpg', cropimg)
+        # required_str = pytesseract.image_to_string(cropimg, lang='lcd_digit2', config='--psm 6')
+        # print("tesseract: "+required_str)
+        grey = cv2.cvtColor(cropimg, cv2.COLOR_BGR2GRAY)
+        #cv2.imwrite('80_grey.png', grey)
+        ret, newimage = cv2.threshold(grey, 50,255,cv2.THRESH_BINARY_INV)
+        #cv2.imwrite('80_result.png', newimage)
+        temp = pytesseract.image_to_string(newimage,config='--psm 6')
+        print("temp=", temp)
+
 
     return {
         'SYS': 104,
