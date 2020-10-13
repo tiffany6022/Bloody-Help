@@ -1,4 +1,4 @@
-"""  
+"""
 Copyright (c) 2019-present NAVER Corp.
 MIT License
 """
@@ -9,9 +9,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import OrderedDict
 import torch.nn.init as init
-from torchutil import *
+from craft_predict.torchutil import *
 
-from basenet.vgg16_bn import vgg16_bn
+from craft_predict.basenet.vgg16_bn import vgg16_bn
 
 
 class double_conv(nn.Module):

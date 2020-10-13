@@ -7,7 +7,6 @@ MIT License
 import sys
 import os
 import time
-import argparse
 
 import torch
 import torch.nn as nn
@@ -19,13 +18,13 @@ from PIL import Image
 import cv2
 from skimage import io
 import numpy as np
-import craft_utils
-import imgproc
-import file_utils
+from craft_predict import craft_utils
+from craft_predict import imgproc
+from craft_predict import file_utils
 import json
 import zipfile
 
-from craft import CRAFT
+from craft_predict.craft import CRAFT
 
 from collections import OrderedDict
 def copyStateDict(state_dict):
@@ -42,19 +41,7 @@ def copyStateDict(state_dict):
 def str2bool(v):
     return v.lower() in ("yes", "y", "true", "t", "1")
 
-parser = argparse.ArgumentParser(description='CRAFT Text Detection')
-parser.add_argument('--trained_model', default='weights/craft_mlt_25k.pth', type=str, help='pretrained model')
-parser.add_argument('--text_threshold', default=0.7, type=float, help='text confidence threshold')
-parser.add_argument('--low_text', default=0.4, type=float, help='text low-bound score')
-parser.add_argument('--link_threshold', default=0.4, type=float, help='link confidence threshold')
-parser.add_argument('--cuda', default=True, type=str2bool, help='Use cuda to train model')
-parser.add_argument('--canvas_size', default=2240, type=int, help='image size for inference')
-parser.add_argument('--mag_ratio', default=2, type=float, help='image magnification ratio')
-parser.add_argument('--poly', default=False, action='store_true', help='enable polygon type')
-parser.add_argument('--show_time', default=False, action='store_true', help='show processing time')
-parser.add_argument('--test_folder', default='/data/', type=str, help='folder path to input images')
 
-args = parser.parse_args()
 
 
 """ For test images in a folder """
@@ -68,7 +55,7 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly):
     t0 = time.time()
 
     # resize
-    img_resized, target_ratio, size_heatmap = imgproc.resize_aspect_ratio(image, args.canvas_size, interpolation=cv2.INTER_LINEAR, mag_ratio=args.mag_ratio)
+    img_resized, target_ratio, size_heatmap = imgproc.resize_aspect_ratio(image, 2240, interpolation=cv2.INTER_LINEAR, mag_ratio=2)
     ratio_h = ratio_w = 1 / target_ratio
 
     # preprocessing
@@ -104,20 +91,20 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly):
     render_img = np.hstack((render_img, score_link))
     ret_score_text = imgproc.cvt2HeatmapImg(render_img)
 
-    if args.show_time : print("\ninfer/postproc time : {:.3f}/{:.3f}".format(t0, t1))
+    # if args.show_time : print("\ninfer/postproc time : {:.3f}/{:.3f}".format(t0, t1))
 
     #return boxes, polys, ret_score_text
     return boxes
 
-def Craft_model(modelpara):
+def Craft_model(modelpara, cuda=True):
     net = CRAFT()
     print('Loading weights from checkpoint {}'.format(modelpara))
-    if args.cuda:
+    if cuda:
         net.load_state_dict(copyStateDict(torch.load(modelpara)))
     else:
         net.load_state_dict(copyStateDict(torch.load(modelpara, map_location='cpu')))
 
-    if args.cuda:
+    if cuda:
         net = net.cuda()
         net = torch.nn.DataParallel(net)
         cudnn.benchmark = False
@@ -125,42 +112,3 @@ def Craft_model(modelpara):
     net.eval()    #stop update the weight of the neuron
 
     return net
-
-def test(modelpara,image_pth):
-    # load net
-    net = CRAFT()     # initialize
-
-    print('Loading weights from checkpoint {}'.format(modelpara))
-    if args.cuda:
-        net.load_state_dict(copyStateDict(torch.load(modelpara)))
-    else:
-        net.load_state_dict(copyStateDict(torch.load(modelpara, map_location='cpu')))
-
-    if args.cuda:
-        net = net.cuda()
-        net = torch.nn.DataParallel(net)
-        cudnn.benchmark = False
-
-    net.eval()    #stop update the weight of the neuron
-
-    t = time.time()
-
-    # load data
-    # for k, image_path in enumerate(image_list):
-        #print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), image_path), end='\r')
-        #image = imgproc.loadImage(image_pth)
-        #bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly)
-        # print("\n bboxes = ", bboxes, "\n poly = ", polys, "\n text = ", score_text)
-        # save score text
-        # filename, file_ext = os.path.splitext(os.path.basename(image_path))
-        # mask_file = result_folder + "/res_" + filename + '_mask.jpg'
-        # #cv2.imwrite(mask_file, score_text)
-        # print("save in" + result_folder)
-        # file_utils.saveResult(image_path, image[:,:,::-1], polys, dirname=result_folder)
-
-    image = imgproc.loadImage(image_pth)
-    bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly)
-    # print("\n bboxes = ", bboxes, "\n poly = ", polys, "\n text = ", score_text)
-    print("elapsed time : {}s".format(time.time() - t))
-    return bboxes
-
