@@ -152,20 +152,20 @@ export default {
     async handleFile() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
-        reader.onload = () => {
+        reader.addEventListener('load', () => {
           this.upload(reader.result)
-        }
+        })
 
         const input = document.createElement('input')
         input.type = 'file'
 
-        input.onchange = () => {
+        input.addEventListener('change', () => {
           const file = input.files[0]
           if (!file.type.match(/image.*/)) return reject()
 
           reader.readAsDataURL(file)
           resolve(input.files[0])
-        }
+        })
 
         input.click()
       })
