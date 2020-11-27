@@ -153,7 +153,7 @@ export default {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.addEventListener('load', () => {
-          this.upload(reader.result)
+          this.compress(reader.result)
         })
 
         const input = document.createElement('input')
@@ -164,16 +164,39 @@ export default {
           if (!file.type.match(/image.*/)) return reject()
 
           reader.readAsDataURL(file)
-          resolve(input.files[0])
+          return resolve(input.files[0])
         })
 
         input.click()
       })
     },
 
-    async upload(base64data) {
+    async compress(base64data) {
       this.loading = true
 
+      const buffer = Buffer.from(base64data.substring(base64data.indexOf(',') + 1))
+      const sizeMB = buffer.length / 1e+6
+
+      if(sizeMB > 0.7){
+        var img = new Image()
+        var canvas = document.createElement('canvas')
+        var ctx = canvas.getContext('2d')
+
+        img.addEventListener('load', () => {
+          canvas.width = img.width
+          canvas.height = img.height
+          ctx.drawImage(img, 0, 0)
+          var base64Compress = canvas.toDataURL('image/jpeg', 0.5)
+          this.upload(base64Compress)
+        })
+        img.src = base64data
+      }
+      else{
+        this.upload(base64data)
+      }
+    },
+
+    async upload(base64data) {
       var image = {
         base64: base64data,
         name: 'imageName'
